@@ -14,12 +14,10 @@
 		<div class="well">
 			<script src="https://checkout.stripe.com/checkout.js"></script>
 
-			<h1 style="text-transform:capitalize">Become {precursor} {name}</h1>
-			<p class="text-danger">{tax_text}</p>
-			<p>
-				Sign up for unlimited access to all <b>{name}</b> forums.<br/>
-				Get early access to all new content we create.<br/>
-				Includes an all-access pass to communicate with our staff of writers.
+			<h1 style="text-transform:capitalize">{subscription_title}</h1>
+
+			<div>
+				{description}
 			</p>
 
 			<div class="d-flex gap-3">

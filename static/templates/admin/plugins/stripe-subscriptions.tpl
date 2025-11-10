@@ -27,6 +27,17 @@
 						<label class="form-label" for="product_id">Stripe Product ID</label>
 						<input type="text" id="product_id" name="product_id" class="form-control" placeholder="prod_xxxxxxx">
 					</div>
+
+					<div class="mb-3">
+						<label class="form-label" for="title">Title</label>
+						<input type="text" id="title" name="title" title="Subscription Title" class="form-control" placeholder="Become an Insider">
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label" for="name">Description (Markdown)</label>
+						<textarea id="description" name="description" title="Subscription Description" class="form-control" placeholder="Sign up for unlimited access to all *Insider* forums. &#10;Get early access to all new content we create. &#10;Includes an all-access pass to communicate with our staff of writers." rows="6"></textarea>
+					</div>
+
 					<div class="mb-3">
 						<label class="form-label" for="name">Membership Name</label>
 						<input type="text" id="name" name="name" title="Membership Name" class="form-control" placeholder="Insider">
@@ -35,16 +46,6 @@
 					<div class="mb-3">
 						<label class="form-label" for="company_name">Company Name</label>
 						<input type="text" id="company_name" name="company_name" title="Company Name" class="form-control" placeholder="Company Name">
-					</div>
-
-					<div class="mb-3">
-						<label class="form-label" for="sales_tax_rate">Sales Tax Rate (optional %)</label>
-						<input type="text" id="sales_tax_rate" name="sales_tax_rate" title="Sales Tax Rate" class="form-control" placeholder="8.25">
-					</div>
-
-					<div class="mb-3">
-						<label class="form-label" for="sales_tax_stateate">Sales Tax State (Abbr)</label>
-						<input type="text" id="sales_tax_state" name="sales_tax_state" title="Sales Tax State" class="form-control" placeholder="TX">
 					</div>
 				</div>
 
