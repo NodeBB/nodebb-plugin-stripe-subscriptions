@@ -12,12 +12,6 @@
 <div class="row">
 	<div class="col-sm-12 col-md-6">
 		<div class="well">
-			<form method="POST" id="stripePOSTForm">
-				<input type="hidden" name="email" class="form-control" value="{email}" required="true">
-				<input type="hidden" value="" name="token" id="stripeToken">
-				<input type="hidden" value="" name="price_id" id="price_id">
-			</form>
-
 			<script src="https://checkout.stripe.com/checkout.js"></script>
 
 			<h1 style="text-transform:capitalize">Become {precursor} {name}</h1>

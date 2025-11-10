@@ -32,7 +32,7 @@ plugin.addAdminNavigation = function (header) {
 plugin.renderHeader = async function (hookData) {
 	const { templateData, req } = hookData;
 	const isSubscribed = await stripe.isSubscribed(req.uid);
-	console.log('rendeer header, isSubscribed:', req.uid, isSubscribed);
+
 	if (!isSubscribed) {
 		templateData.navigation.push({
 			route: '/subscribe',
@@ -52,12 +52,12 @@ plugin.addSubscriptionSettings = async function (data) {
 	if (isSubscribed) {
 		data.customSettings.push({
 			title: 'Forum Subscription',
-			content: '<button class="btn btn-danger" id="btn-cancel-subscription">Cancel Subscription</button><form id="cancel-subscription" method="POST" action="/stripe-subscriptions/cancel-subscription"></form>',
+			content: '<button class="btn btn-danger" id="btn-cancel-subscription">Cancel Subscription</button>',
 		});
 	} else {
 		data.customSettings.push({
 			title: 'Forum Subscription',
-			content: `<a href="${nconf.get('relative_path')}/subscribe" class="btn btn-success" id="btn-buy-subscription">Buy Subscription</a>`,
+			content: `<a href="${nconf.get('relative_path')}/subscribe" class="btn btn-success">Buy Subscription</a>`,
 		});
 	}
 	return data;
