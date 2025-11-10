@@ -1,11 +1,14 @@
 {
-  "name": "nodebb-plugin-stripe-subscriptions",
-  "version": "0.1.1",
+  "name": "@nodebb/nodebb-plugin-stripe-subscriptions",
+  "version": "1.0.0",
   "description": "Monetize your forum with paid subscription-based access to certain categories",
   "main": "library.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/edthefifth/nodebb-plugin-stripe-subscriptions"
+    "url": "https://github.com/NodeBB/nodebb-plugin-stripe-subscriptions"
+  },
+  "scripts": {
+    "lint": "eslint ."
   },
   "keywords": [
     "nodebb",
@@ -15,18 +18,22 @@
     "monetization"
   ],
   "author": {
-    "name": "Ed James",
-    "email": "ed@sullivation.com"
+    "name": "Barış Soner Uşaklı",
+    "email": "baris@nodebb.org"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/edthefifth/nodebb-plugin-stripe-subscriptions/issues"
+    "url": "https://github.com/NodeBB/nodebb-plugin-stripe-subscriptions/issues"
   },
   "readmeFilename": "README.md",
   "nbbpm": {
-    "compatibility": "^1.0.0"
+    "compatibility": "^4.0.0"
   },
   "dependencies": {
-    "stripe": "5.4.0"
+    "stripe": "19.3.0"
+  },
+  "devDependencies": {
+    "eslint": "9.39.1",
+    "eslint-config-nodebb": "^1.1.11"
   }
 }

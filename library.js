@@ -1,107 +1,83 @@
-"use strict";
+'use strict';
 
-var controllers = require('./lib/controllers'),
-	stripe = require('./lib/stripe'),
-	nconf = module.parent.require('nconf'),
-	winston = module.parent.require('winston'),
+const nconf = require.main.require('nconf');
 
-	plugin = {};
+const controllers = require('./lib/controllers');
+const stripe = require('./lib/stripe');
+const routeHelpers = require.main.require('./src/routes/helpers');
 
-plugin.init = function(params, callback) {
-	var router = params.router,
-		hostMiddleware = params.middleware,
-		hostControllers = params.controllers;
+const plugin = module.exports;
+
+plugin.init = async function (params) {
+	const { router, middleware } = params;
 
 	stripe.configure();
 
-	router.get('/admin/plugins/stripe-subscriptions', hostMiddleware.admin.buildHeader, controllers.renderAdminPage);
-	router.get('/api/admin/plugins/stripe-subscriptions', controllers.renderAdminPage);
+	routeHelpers.setupAdminPageRoute(router, '/admin/plugins/stripe-subscriptions', controllers.renderAdminPage);
+	routeHelpers.setupPageRoute(router, '/subscribe', controllers.renderSubscribePage);
 
-	router.get('/subscribe', hostMiddleware.buildHeader, stripe.subscribe);
-	router.get('/api/subscribe', stripe.subscribe);
-
-	router.post('/subscribe', stripe.onSubscribe);
-
-	router.get('/stripe-subscriptions/success', stripe.onSuccess);
-
-	router.post('/stripe-subscriptions/cancel-subscription', stripe.cancelSubscription);
-
-	callback();
+	router.post('/subscribe', middleware.applyCSRF, stripe.onSubscribe);
+	router.post('/stripe-subscriptions/cancel-subscription', middleware.applyCSRF, stripe.cancelSubscription);
 };
 
-plugin.addAdminNavigation = function(header, callback) {
+plugin.addAdminNavigation = function (header) {
 	header.plugins.push({
 		route: '/plugins/stripe-subscriptions',
 		icon: 'fa-stripe',
-		name: 'Stripe Subscriptions'
+		name: 'Stripe Subscriptions',
 	});
-
-	callback(null, header);
+	return header;
 };
 
-plugin.addNavigation = function(items,callback){
-    
-    stripe.isSubscribed(items.uid, function(err, isSubscribed) {
-        
-            if(err)
-            {
-                winston.warn('[stripe] addNavigation Error: '+err);
-                callback(err,items);
-            }    
-            else if (!isSubscribed) {
-                items.push({
-                    route    : "/subscribe",
-                    title    : "Get Premium Access",
-                    enabled  : true,
-                    iconClass: "fa-usd",
-                    textClass: "visible-xs-inline",
-                    text     : "Upgrade"
-                });
-                callback(null,items);
-            }
-            
-    });
-    
-    
+plugin.renderHeader = async function (hookData) {
+	const { templateData, req } = hookData;
+	const isSubscribed = await stripe.isSubscribed(req.uid);
+	console.log('rendeer header, isSubscribed:', req.uid, isSubscribed);
+	if (!isSubscribed) {
+		templateData.navigation.push({
+			route: '/subscribe',
+			title: 'Get Premium Access',
+			enabled: true,
+			iconClass: 'fa-usd',
+			textClass: 'visible-xs-inline',
+			text: 'Upgrade',
+		});
+	}
+	return hookData;
 };
 
 
-plugin.addSubscriptionSettings = function(data, callback) {
-	stripe.isSubscribed(data.uid, function(err, isSubscribed) {
-		if (isSubscribed) {
-			data.customSettings.push({
-				title: 'Forum Subscription',
-				content: '<button class="btn btn-danger" id="btn-cancel-subscription">Cancel Subscription</button><form id="cancel-subscription" method="POST" action="/stripe-subscriptions/cancel-subscription"></form>'
-			});
-		}
-                else
-                {
-                    data.customSettings.push({
-				title: 'Forum Subscription',
-				content: '<a href="/subscribe" class="btn btn-success" id="btn-buy-subscription">Buy Subscription</a>'
-			});
-                }    
-
-		callback(null, data);
-	});
+plugin.addSubscriptionSettings = async function (data) {
+	const isSubscribed = await stripe.isSubscribed(data.uid);
+	if (isSubscribed) {
+		data.customSettings.push({
+			title: 'Forum Subscription',
+			content: '<button class="btn btn-danger" id="btn-cancel-subscription">Cancel Subscription</button><form id="cancel-subscription" method="POST" action="/stripe-subscriptions/cancel-subscription"></form>',
+		});
+	} else {
+		data.customSettings.push({
+			title: 'Forum Subscription',
+			content: `<a href="${nconf.get('relative_path')}/subscribe" class="btn btn-success" id="btn-buy-subscription">Buy Subscription</a>`,
+		});
+	}
+	return data;
 };
 
-plugin.whitelistSubscriptionId = function (hookData, callback) {
-    hookData.whitelist.push('stripe-subscriptions:sid');
-    callback(null, hookData);
+plugin.whitelistSubscriptionId = function (hookData) {
+	hookData.whitelist.push('stripe-subscriptions:sid');
+	return hookData;
 };
 
-plugin.redirectToSubscribe = function(data, callback) {
+plugin.redirectToSubscribe = async function (data) {
 	if (!data.req.uid || (!data.req.path.match('/topic') && !data.req.path.match('/category'))) {
-		return callback(false, data);
+		return data;
 	}
 
-	var url = nconf.get('relative_path') + '/subscribe';
+	const url = nconf.get('relative_path') + '/subscribe';
 	if (data.res.locals.isAPI) {
 		data.res.status(308).json(url);
 	} else {
 		data.res.redirect(url);
 	}
+	return data;
 };
-
-module.exports = plugin;

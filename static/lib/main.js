@@ -1,8 +1,8 @@
-"use strict";
-/*global app, bootbox, ajaxify*/
+'use strict';
 
-$('document').ready(function() {
-	$(window).on('action:ajaxify.end', function(err, data) {
+
+$('document').ready(function () {
+	$(window).on('action:ajaxify.end', function () {
 		if (!ajaxify.currentPage) {
 			var href = window.location.href;
 
@@ -27,8 +27,6 @@ $('document').ready(function() {
 					}
 				});
 			});
-                        
-                        
 		}
 	});
 });

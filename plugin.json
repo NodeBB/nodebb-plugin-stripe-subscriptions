@@ -1,6 +1,4 @@
 {
-	"id": "nodebb-plugin-stripe-subscriptions",
-	"url": "https://github.com/edthefifth/nodebb-plugin-stripe-subscriptions",
 	"library": "./library.js",
 	"hooks": [
 		{
@@ -15,24 +13,19 @@
 		{
 			"hook": "filter:helpers.notAllowed", "method": "redirectToSubscribe"
 		},
-                {
+		{
 			"hook": "filter:user.whitelistFields", "method": "whitelistSubscriptionId"
 		},
-                {
-			"hook": "filter:navigation.available", "method": "addNavigation"
+		{
+			"hook": "filter:middleware.renderHeader", "method": "renderHeader"
 		}
-	],
-	"staticDirs": {
-		"static": "./static"
-	},
-	"less": [
-		"static/style.less"
 	],
 	"scripts": [
 		"static/lib/main.js"
 	],
-	"acpScripts": [
-		"static/lib/admin.js"
-	],
+	"modules": {
+		"../client/subscribe.js": "static/lib/subscribe.js",
+		"../admin/plugins/stripe-subscriptions.js": "static/lib/admin.js"
+	},
 	"templates": "static/templates"
 }
