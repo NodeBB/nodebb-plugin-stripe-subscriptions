@@ -55,7 +55,7 @@
 						<label class="form-label" for="premium-group">Add premium members to this group:</label>
 						<select name="premium-group" id="premium-group" class="form-select">
 							{{{ each groups }}}
-							<option value="{groups.displayName}">{groups.displayName}</option>
+							<option value="{./name}">{./name}</option>
 							{{{ end }}}
 						</select>
 					</div>

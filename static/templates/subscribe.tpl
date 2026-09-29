@@ -17,8 +17,8 @@
 			<h1 style="text-transform:capitalize">{subscription_title}</h1>
 
 			<div>
-				{description}
-			</p>
+				{{description}}
+			</div>
 
 			<div class="d-flex gap-3">
 			{{{ each product.prices}}}

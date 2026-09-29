@@ -1,8 +1,7 @@
 'use strict';
 
 define('admin/plugins/stripe-subscriptions', ['settings'], function (Settings) {
-
-	var ACP = {};
+	const ACP = {};
 
 	ACP.init = function () {
 		Settings.load('stripe-subscriptions', $('.stripe-subscriptions-settings'));

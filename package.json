@@ -27,13 +27,13 @@
   },
   "readmeFilename": "README.md",
   "nbbpm": {
-    "compatibility": "^4.0.0"
+    "compatibility": "^4.15.0"
   },
   "dependencies": {
     "stripe": "19.3.0"
   },
   "devDependencies": {
-    "eslint": "9.39.1",
-    "eslint-config-nodebb": "^1.1.11"
+    "eslint": "10.11.0",
+    "eslint-config-nodebb": "^2.0.3"
   }
 }
